@@ -27,7 +27,7 @@ Image (B, 3, 32, 32)
 ## Structure du repo
 
 ```
-mini-vit-cifar10/
+mini-vit-cifar10-1-/
 ├── README.md
 ├── requirements.txt
 ├── data/
@@ -58,8 +58,8 @@ mini-vit-cifar10/
 ### 1. Installation
 
 ```bash
-git clone https://github.com/<votre-username>/mini-vit-cifar10.git
-cd mini-vit-cifar10
+git clone https://github.com/emmanuellatsipoaka-cyber/mini-vit-cifar10-1-
+cd mini-vit-cifar10-1
 pip install -r requirements.txt
 ```
 
@@ -72,7 +72,7 @@ python src/training/train.py
 - CIFAR-10 est téléchargé automatiquement dans `./data/`
 - Le meilleur modèle est sauvegardé dans `results/best_model.pth`
 - Les courbes sont générées dans `results/training_curves.png`
-- Durée : ~45 min CPU / ~8 min GPU (30 époques)
+- Durée :  ~8 min GPU (30 époques)
 
 ### 3. Ablation study
 
@@ -82,7 +82,6 @@ python src/experiments/ablation_study.py
 
 - Compare 4 variantes sur 5 époques
 - Génère `results/ablation_results.png`
-- Durée : ~15 min CPU / ~3 min GPU
 
 ---
 
@@ -110,5 +109,5 @@ python src/experiments/ablation_study.py
 ---
 
 ## Auteur
-
+**Emmanuella TSIPOAKA**
 Projet réalisé dans le cadre du cours **Advanced Deep Learning — ENEAM/ISE**
