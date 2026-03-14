@@ -1,4 +1,11 @@
 # Mini-ViT — Vision Transformer from Scratch on CIFAR-10
+Ce projet consiste à implémenter un Vision Transformer minimal (Mini-ViT) entièrement from scratch en PyTorch, sans modèle pré-entraîné ni bibliothèque d’architecture de haut niveau. L’objectif est de démontrer une compréhension approfondie des mécanismes fondamentaux des architectures Transformer appliquées à la vision par ordinateur.
+
+Le modèle est entraîné sur CIFAR-10, un dataset de classification d’images composé de 10 classes. L’architecture transforme chaque image en une séquence de patch tokens, permettant d’appliquer le mécanisme d’attention auto-régulée introduit dans les Transformers.
+
+L’architecture suit le pipeline suivant : l’image d’entrée (32×32) est d’abord découpée en patches 4×4, transformés en vecteurs d’embedding via une convolution stride=patch_size. Un CLS token est ajouté afin de représenter globalement l’image. À ces tokens s’ajoutent des embeddings positionnels appris qui permettent au modèle de conserver l’information spatiale. Les tokens sont ensuite traités par 6 blocs Transformer, composés d’un mécanisme de Multi-Head Self-Attention, d’un Feed-Forward Network, et de connexions résiduelles. Enfin, la représentation du CLS token est utilisée pour la classification finale via une couche linéaire.
+
+Cette architecture contient environ 3.4 millions de paramètres, avec une dimension d’embedding de 128 et 4 têtes d’attention.
 
 Implémentation d'un Vision Transformer (ViT) minimal **from scratch** en PyTorch, sans modèle pré-entraîné ni bibliothèque de haut niveau.
 
