@@ -1,27 +1,21 @@
 # Mini-ViT — Vision Transformer from Scratch on CIFAR-10
-
-Pour ce projet d'Advanced Deep Learning, j'ai choisi d'implémenter un **Vision Transformer (ViT)** from scratch en PyTorch. Pas de modèle pré-entraîné, pas de bibliothèque externe — chaque composant est écrit et commenté manuellement.
-
-Le choix du ViT sur CIFAR-10 m'a semblé intéressant parce que l'idée de traiter une image comme une séquence de tokens (comme en NLP) est contre-intuitive au premier abord, mais elle fonctionne vraiment bien une fois qu'on comprend la mécanique derrière.
-
----
+Pour ce projet d'Advanced Deep Learning, j'ai choisi d'implémenter un **Vision Transformer (ViT)** from scratch en PyTorch. Pas de modèle pré-entraîné, pas de bibliothèque externe, chaque composant est écrit et commenté.
 
 ## L'idée en une phrase
 
 On découpe chaque image 32×32 en **64 petits patches de 4×4 pixels**, on projette chacun dans un espace de dimension 128, et on laisse le Transformer apprendre quelles relations spatiales sont importantes pour classifier l'image.
 
----
 
-## Ce que j'ai implémenté manuellement
+## Implémention
 
 **`src/model/patch_embedding.py`**  
-La première brique : transformer une image en séquence de vecteurs. J'utilise une `Conv2d` avec `stride=patch_size` qui est mathématiquement équivalente à une projection linéaire appliquée à chaque patch.
+La première brique : transformer une image en séquence de vecteurs. On utilise une `Conv2d` avec `stride=patch_size` qui est mathématiquement équivalente à une projection linéaire appliquée à chaque patch.
 
 **`src/model/attention_head.py`**  
 Le mécanisme d'attention multi-têtes from scratch. La formule `softmax(QKᵀ / √d_k) · V` implémentée ligne par ligne, avec la division par `√d_k` pour éviter la saturation du softmax en grande dimension.
 
 **`src/model/transformer_block.py`**  
-Un bloc complet avec Pre-LayerNorm, attention, FFN (Linear → GELU → Linear), et connexions résiduelles. J'ai choisi GELU plutôt que ReLU parce qu'il est différentiable partout — pas de "dying neurons" pour les valeurs négatives.
+Un bloc complet avec Pre-LayerNorm, attention, FFN (Linear → GELU → Linear), et connexions résiduelles. on a choisi GELU plutôt que ReLU parce qu'il est différentiable partout: pas de "dying neurons" pour les valeurs négatives.
 
 **`src/model/architecture.py`**  
 L'assemblage final : patch embedding → CLS token → positional embedding → 6 blocs Transformer → tête de classification linéaire.
@@ -45,7 +39,7 @@ CIFAR-10 se télécharge automatiquement au premier lancement.
 ```bash
 python src/training/train.py
 ```
-Environ 8 minutes sur GPU T4, 45 minutes sur CPU.  
+Environ 8 minutes sur GPU T4, 45 minutes sur CPU.  On conseille donc d'utiliser le GPU.
 Le meilleur modèle est sauvegardé dans `results/best_model.pth`.
 
 **Ablation study (5 époques par variante) :**
@@ -53,20 +47,19 @@ Le meilleur modèle est sauvegardé dans `results/best_model.pth`.
 python src/experiments/ablation_study.py
 ```
 
----
 
 ## Résultats
 
-Après 30 époques d'entraînement, le modèle atteint environ **72–75% de validation accuracy** sur CIFAR-10 — ce qui est raisonnable pour un ViT entraîné from scratch sans pré-entraînement ni data augmentation avancée.
+Après 30 époques d'entraînement, le modèle atteint environ **72–75% de validation accuracy** sur CIFAR-10 e qui est raisonnable pour un ViT entraîné from scratch sans pré-entraînement ni data augmentation avancée.
 
 ![Courbes d'entraînement](results/training_curves.png)
 
-Pour l'ablation study, j'ai comparé 4 variantes sur 5 époques :
+Pour l'ablation study, On comparé 4 variantes sur 5 époques :
 
 - **Modèle complet** : baseline de référence (~42% à 5 époques)
-- **Sans positional encoding** : −5% — le modèle perd l'information spatiale entre patches
-- **Sans CLS token** (mean pooling à la place) : −2% — le CLS token agrège mieux
-- **Depth=2** (2 blocs au lieu de 6) : −15% — clairement insuffisant pour apprendre des features complexes
+- **Sans positional encoding** : −5% le modèle perd l'information spatiale entre patches
+- **Sans CLS token** (mean pooling à la place) : −2% le CLS token agrège mieux
+- **Depth=2** (2 blocs au lieu de 6) : −15% clairement insuffisant pour apprendre des features complexes
 
 ![Ablation study](results/ablation_results.png)
 
