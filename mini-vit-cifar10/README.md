@@ -1,4 +1,4 @@
-# Mini-ViT — Vision Transformer from Scratch on CIFAR-10
+# Mini-ViT: Vision Transformer from Scratch on CIFAR-10
 Pour ce projet d'Advanced Deep Learning, on a choisi d'implémenter un **Vision Transformer (ViT)** from scratch en PyTorch. Pas de modèle pré-entraîné, pas de bibliothèque externe, chaque composant est écrit et commenté.
 
 ## L'idée en une phrase
