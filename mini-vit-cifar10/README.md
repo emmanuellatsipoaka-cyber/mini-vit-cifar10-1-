@@ -1,5 +1,5 @@
 # Mini-ViT — Vision Transformer from Scratch on CIFAR-10
-Pour ce projet d'Advanced Deep Learning, j'ai choisi d'implémenter un **Vision Transformer (ViT)** from scratch en PyTorch. Pas de modèle pré-entraîné, pas de bibliothèque externe, chaque composant est écrit et commenté.
+Pour ce projet d'Advanced Deep Learning, on a choisi d'implémenter un **Vision Transformer (ViT)** from scratch en PyTorch. Pas de modèle pré-entraîné, pas de bibliothèque externe, chaque composant est écrit et commenté.
 
 ## L'idée en une phrase
 
@@ -23,7 +23,6 @@ L'assemblage final : patch embedding → CLS token → positional embedding → 
 **`src/utils/initialization.py`**  
 Initialisation Xavier Uniform pour les couches linéaires. Le choix est justifié mathématiquement : on veut maintenir `Var(sortie) = Var(entrée)` à travers les couches, ce qui donne `W ~ Uniform(-√(6/(n_in+n_out)), +√(6/(n_in+n_out)))`.
 
----
 
 ## Reproduire le projet
 
@@ -63,7 +62,6 @@ Pour l'ablation study, On comparé 4 variantes sur 5 époques :
 
 ![Ablation study](results/ablation_results.png)
 
----
 
 ## Deux questions de réflexion
 
@@ -76,7 +74,6 @@ Le gradient devient `∂x_{l+1}/∂x_l = 1 + ∂F/∂x`. Le terme **+1** garanti
 
 ReLU met à zéro toutes les activations négatives, ce qui peut "tuer" des neurones définitivement pendant l'entraînement. GELU (`x · Φ(x)`) atténue graduellement les valeurs négatives au lieu de les annuler — le gradient reste non-nul partout, ce qui accélère la convergence. C'est pour ça que GELU est devenu standard dans les Transformers (BERT, GPT, ViT original).
 
----
 
 ## Structure du repo
 
